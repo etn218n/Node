@@ -31,7 +31,8 @@ namespace Node
         protected BaseFSM(string name = "Untitled FSM")
         {
             this.name = name;
-            nodeStack = new CircularBuffer<INode>(10);
+            nodeStack = new CircularBuffer<INode>(maxNodeStackSize);
+            
             transitionsFromNode     = new Dictionary<INode, List<Transition>>();
             nodesPointedByEveryNode = new List<INode>();
             currentTransitionSet    = new List<Transition>();
