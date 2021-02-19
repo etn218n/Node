@@ -1,22 +1,25 @@
 ﻿using Node;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NodeExamples
 {
     public class ParticleEmitState : State
     {
+        private string stateName;
         private ParticleSystem particle;
-        private Text stateUIText;
-        
-        public ParticleEmitState(ParticleSystem particle, Text stateUIText)
+        private TextMeshProUGUI stateUIText;
+
+        public ParticleEmitState(ParticleSystem particle, TextMeshProUGUI stateUIText, string stateName)
         {
-            this.particle = particle;
+            this.stateName   = stateName;
+            this.particle    = particle;
+            this.stateUIText = stateUIText;
         }
 
         public override void OnEnter()
         {
-            stateUIText.text = "Emit Particle";
+            stateUIText.text = stateName;
             particle.Play();
         }
 

@@ -1,6 +1,6 @@
 using Node;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NodeExamples
 {
@@ -11,7 +11,7 @@ namespace NodeExamples
         private Rigidbody rigidBody;
         private Character character;
 
-        [SerializeField] private Text stateUIText;
+        [SerializeField] private TextMeshProUGUI stateUIText;
         [SerializeField] private ParticleSystem sleepParticle;
 
         private void Awake()
@@ -25,12 +25,12 @@ namespace NodeExamples
         {
             fsm = new FSM("Sphere");
 
-            var airborneState = new SubFSM(fsm);
+            var airborneState = new SubFSM(fsm, "Sphere Airborne");
 
-            var walkState  = new WalkState(input, rigidBody, character, stateUIText);
-            var sleepState = new ParticleEmitState(sleepParticle, stateUIText);
-            var jumpState  = new JumpState(0.2f, rigidBody, character, stateUIText);
-            var doubleJumpState  = new JumpState(0.2f, rigidBody, character, stateUIText);
+            var walkState  = new WalkState(input, rigidBody, character, stateUIText, "Walk");
+            var sleepState = new ParticleEmitState(sleepParticle, stateUIText, "Sleep");
+            var jumpState  = new JumpState(0.2f, rigidBody, character, stateUIText, "Jump");
+            var doubleJumpState  = new JumpState(0.2f, rigidBody, character, stateUIText, "Double Jump");
 
             fsm.AddTransition(sleepState, walkState, () => input.HorizontalAxis != 0);
             fsm.AddTransition(sleepState, airborneState, () => UnityEngine.Input.GetKeyDown(KeyCode.Space) && character.IsGrounded);
@@ -39,8 +39,8 @@ namespace NodeExamples
             fsm.AddTransitionToPreviousNode(airborneState, () => airborneState.IsFinished);
             
             airborneState.AddTransitionToExitNode(jumpState, () => character.IsGrounded && jumpState.IsDelayPassed);
-            airborneState.AddTransitionToExitNode(doubleJumpState, () => character.IsGrounded);
-            airborneState.AddTransition(jumpState, doubleJumpState, () => UnityEngine.Input.GetKeyDown(KeyCode.Space));
+            airborneState.AddTransitionToExitNode(doubleJumpState,  () => character.IsGrounded);
+            airborneState.AddTransition(jumpState, doubleJumpState, () => UnityEngine.Input.GetKeyDown(KeyCode.Space) && jumpState.IsDelayPassed);
 
             fsm.SetEntry(sleepState);
             fsm.Start();

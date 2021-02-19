@@ -1,23 +1,25 @@
 ﻿using Node;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NodeExamples
 {
     public class JumpState : State
     {
         private float delay;
+        private string stateName;
         private Rigidbody rigidBody;
         private Character character;
-        private Text stateUIText;
+        private TextMeshProUGUI stateUIText;
 
         private float timeElapsed;
         
         public bool IsDelayPassed { get; private set; }
 
-        public JumpState( float delay, Rigidbody rigidBody, Character character, Text stateUIText)
+        public JumpState( float delay, Rigidbody rigidBody, Character character, TextMeshProUGUI stateUIText, string stateName)
         {
             this.delay       = delay;
+            this.stateName   = stateName;
             this.rigidBody   = rigidBody;
             this.character   = character;
             this.stateUIText = stateUIText;
@@ -28,7 +30,7 @@ namespace NodeExamples
             timeElapsed   = 0;
             IsDelayPassed = false;
             
-            stateUIText.text = "Jump";
+            stateUIText.text = stateName;
             
             Launch();
         }

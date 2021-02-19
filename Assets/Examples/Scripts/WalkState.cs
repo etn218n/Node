@@ -1,19 +1,21 @@
 ﻿using Node;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace NodeExamples
 {
     public class WalkState : State
     {
         private Input input;
+        private string stateName;
         private Rigidbody rigidBody;
         private Character character;
-        private Text stateUIText;
+        private TextMeshProUGUI stateUIText;
 
-        public WalkState(Input input, Rigidbody rigidBody, Character character, Text stateUIText)
+        public WalkState(Input input, Rigidbody rigidBody, Character character, TextMeshProUGUI stateUIText, string stateName)
         {
             this.input       = input;
+            this.stateName   = stateName;
             this.rigidBody   = rigidBody;
             this.character   = character;
             this.stateUIText = stateUIText;
@@ -21,7 +23,7 @@ namespace NodeExamples
 
         public override void OnEnter()
         {
-            stateUIText.text = "Walk";
+            stateUIText.text = stateName;
         }
 
         public override void OnFixedUpdate()
